@@ -6,7 +6,7 @@ import { state } from './state.js?v=2';
 import { translate } from './translate.js?v=2';
 import { showToast } from './toast.js?v=2';
 import { setKeys } from './qrdoc.js?v=4';
-import { editCode } from './history.js?v=5';
+import { editCode } from './history.js?v=6';
 
 /** The picture types a logo can be. */
 const LOGO_TYPES = 'image/png,image/jpeg,image/gif,image/webp,image/svg+xml';

@@ -8,9 +8,9 @@ import { translate } from './translate.js?v=2';
 import { VIEWER } from './sync.js?v=25';
 import { setKey } from './qrdoc.js?v=4';
 import { getTextWidth } from './drawing.js?v=3';
-import { editCode } from './history.js?v=5';
-import { showInCode } from './codeview.js?v=5';
-import { showPane } from './panes.js?v=5';
+import { editCode } from './history.js?v=6';
+import { showInCode } from './codeview.js?v=6';
+import { showPane } from './panes.js?v=6';
 
 /** The font size of the caption field when the caption's own size is unknown, in pixels. */
 const DEFAULT_FONT_SIZE = 16;

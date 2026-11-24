@@ -36,8 +36,8 @@ documents stay there unless you send them somewhere yourself.
 3. **Export** SVG, PDF or EPS for print, or PNG, JPEG or WebP.
 
 The tabs **Content**, **Design** and **Check** are in the side panel. The button at the top right
-of the work area opens it over the right of the QR code's stage, below the stage's bar, and closes
-it again (Escape too); it is closed when the editor opens. On a phone it is the view **Edit**.
+of the work area opens it as a column right of the QR code's stage, which gets narrower, and closes it
+again; it is closed when the editor opens. On a phone it is the view **Edit**.
 
 ## The QR document
 

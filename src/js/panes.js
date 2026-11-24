@@ -1,12 +1,12 @@
 /* The panes of the work area: the splitter between code and stage (dragged or
    moved with the arrow keys, remembered in the settings), the side panel (a
-   drawer on the desktop, closed at the start), and on a narrow screen the tabs
+   column on the desktop, closed at the start), and on a narrow screen the tabs
    that show one pane at a time. */
 
 import { state, ui, getNumberInRange, getElement, getElements } from './state.js?v=2';
 import { resizePreview } from './preview.js?v=3';
-import { renderCode, syncScroll } from './codeview.js?v=5';
-import { saveEditorState } from './documents.js?v=5';
+import { renderCode, syncScroll } from './codeview.js?v=6';
+import { saveEditorState } from './documents.js?v=6';
 
 /** The smallest and largest share of the code pane. */
 const MIN_SPLIT = 0.12;
@@ -20,7 +20,7 @@ const splitter = getElement('#splitter');
 
 /**
  * Lets the splitter be dragged and moved with the arrow keys, the pane tabs switch panes and the
- * side panel's button open and close the drawer below the preview's bar.
+ * side panel's button open and close the side panel's column.
  * @returns {void}
  */
 export function startPanes() {
@@ -29,41 +29,16 @@ export function startPanes() {
     getElements('[data-pane]').forEach(button => button.addEventListener('click', () => showPane(button.dataset.pane)));
     showSidePanel(false);
     getElement('#btn-panel').addEventListener('click', () => showSidePanel(ui.work.dataset.panel !== 'open'));
-    getElement('#side-panel').addEventListener('keydown', closeSidePanelOnEscape);
-    watchPreviewBarHeight();
 }
 
 /**
- * Keeps the height of the preview's bar as --preview-bar on the work area: the side panel's
- * drawer starts below the bar, so the scan badge stays in view and usable while it is open. The
- * bar is taller when its parts wrap (narrow work area, long labels of a language).
- * @returns {void}
- */
-function watchPreviewBarHeight() {
-    const bar = getElement('.draw-pane > .pane-header');
-    const observer = new ResizeObserver(() => ui.work.style.setProperty('--preview-bar', bar.offsetHeight + 'px'));
-    observer.observe(bar);
-}
-
-/**
- * Opens or closes the side panel's drawer.
+ * Opens or closes the side panel's column.
  * @param {boolean} isOpen - true to open it.
  * @returns {void}
  */
 export function showSidePanel(isOpen) {
     ui.work.dataset.panel = isOpen ? 'open' : 'closed';
     getElement('#btn-panel').setAttribute('aria-expanded', String(isOpen));
-}
-
-/**
- * Closes the side panel's drawer with Escape inside it and puts the focus on its button.
- * @param {KeyboardEvent} event - the key in the side panel.
- * @returns {void}
- */
-function closeSidePanelOnEscape(event) {
-    if (event.key !== 'Escape' || ui.work.dataset.panel !== 'open' || event.target.closest('dialog')) return;
-    showSidePanel(false);
-    getElement('#btn-panel').focus();
 }
 
 /**
@@ -83,7 +58,7 @@ export function updateSplit() {
 function startSplitDrag(event) {
     splitter.setPointerCapture(event.pointerId);
     const workBox = ui.work.getBoundingClientRect();
-    const available = workBox.width - splitter.offsetWidth;
+    const available = workBox.width - getElement('.inspector').offsetWidth - splitter.offsetWidth;
     /**
      * Moves the split with the pointer.
      * @param {PointerEvent} moveEvent - the pointer move.

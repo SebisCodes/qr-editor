@@ -11,9 +11,9 @@ import { createAi } from './ai.js?v=7';
 import { createWebMcp } from './mcp.js?v=3';
 import { setKey, setContent, KEYS } from './qrdoc.js?v=4';
 import { TYPE_NAMES } from './payload.js?v=5';
-import { editCode, undo } from './history.js?v=5';
-import { openDocument, createDocument } from './documents.js?v=5';
-import { receiveDocument } from './incoming.js?v=5';
+import { editCode, undo } from './history.js?v=6';
+import { openDocument, createDocument } from './documents.js?v=6';
+import { receiveDocument } from './incoming.js?v=6';
 
 /** Documents longer than this are sent to an AI with their pictures shortened. */
 const MAX_FULL_DOCUMENT = 60000;

@@ -5,8 +5,8 @@
 
 Checks the document (design lines, ---, content), the code drawn from it and
 read back (scan check), the Content, Design and Check tabs writing into the
-code with one undo step each, the side panel as a drawer below the stage's bar
-(closed at the start, nothing moves when it opens or closes), the problems,
+code with one undo step each, the side panel as a column right of the stage
+(closed at the start, narrowing the stage when it opens), the problems,
 editing the caption in place, reading a code from a picture, every export format,
 many codes from a table, AI links, WebMCP tools, My documents, the viewer and the
 phone layout."""
@@ -27,7 +27,7 @@ FAKE_MCP = "window.tools = []; document.modelContext = { registerTool(t) { windo
 
 
 def show_side_panel(page, is_open):
-    """Opens or closes the side panel's drawer (it is closed at the start).
+    """Opens or closes the side panel's column (it is closed at the start).
 
     Args:
         page (Page): the editor's page.
@@ -173,24 +173,31 @@ with sync_playwright() as pw:
     check_that(page.locator('#scan-badge[data-state="good"]').count() == 1, 'the badge says the code scans')
     check_that(page.locator('#hl .k').count() >= 10 and page.locator('#hl .d').count() == 1, 'the code is highlighted (keys, the --- line)')
 
-    # --- Side panel: a drawer below the stage's bar, closed at the start ---
-    steady = ['.code-pane', '#stage', '#qr-view', '.draw-pane > .pane-header', '#scan-badge', '#btn-panel']
+    # --- Side panel: a column right of the stage, closed at the start ---
+    steady = ['.header', '#btn-panel']
+    uncovered = "() => [document.querySelector('#scan-badge'), document.querySelector('#qr-view svg'), ...document.querySelectorAll('#side-panel [data-itab]')].every(element => { const box = element.getBoundingClientRect(); const hit = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2); return box.width > 0 && Boolean(hit) && (element.contains(hit) || hit.contains(element)); })"
     for width in (1440, 1280, 1100, 900):
         page.set_viewport_size({'width': width, 'height': 900})
         page.wait_for_timeout(300)
         before = get_boxes(page, steady)
+        pane_before, code_before = get_boxes(page, ['.draw-pane', '.code-pane'])
         closed = page.evaluate("getComputedStyle(document.querySelector('#side-panel')).display") == 'none' and page.get_attribute('#btn-panel', 'aria-expanded') == 'false'
         show_side_panel(page, True)
         page.wait_for_timeout(300)
-        panel, bar = get_boxes(page, ['#side-panel', '.draw-pane > .pane-header'])
-        check_that(closed and get_boxes(page, steady) == before, f'{width} px: the side panel is closed at the start and opens without moving the code, the stage, the QR code, the bar or its button')
-        check_that(panel['y'] >= bar['y'] + bar['height'] and panel['x'] + panel['width'] == width and panel['width'] > 0, f'{width} px: the drawer stands below the stage\'s bar at the right edge: {panel}')
-        page.focus('[data-itab=content]')
-        page.keyboard.press('Escape')
-        page.wait_for_timeout(200)
-        check_that(page.evaluate("getComputedStyle(document.querySelector('#side-panel')).display") == 'none' and page.evaluate("document.activeElement.id") == 'btn-panel'
-                   and get_boxes(page, steady) == before and page.evaluate('document.documentElement.scrollWidth') <= width,
-                   f'{width} px: Escape closes it, the focus goes to its button, nothing moved, no sideways scrolling')
+        panel, pane, code = get_boxes(page, ['#side-panel', '.draw-pane', '.code-pane'])
+        column_width = 290
+        share = code_before['width'] / (code_before['width'] + pane_before['width'])
+        check_that(closed and get_boxes(page, steady) == before, f'{width} px: the side panel is closed at the start; open, the top bar and its button keep their place and size')
+        check_that(panel['x'] + panel['width'] == width and panel['width'] == column_width and abs(pane['x'] + pane['width'] - panel['x']) <= 1
+                   and abs(code['width'] - share * (code['width'] + pane['width'])) <= 2
+                   and abs(code['width'] + 6 + pane['width'] + panel['width'] - width) <= 2 and abs(code['x'] + code['width'] + 6 - pane['x']) <= 1,
+                   f'{width} px: the side panel is a column of {column_width} px at the right edge; the code and the stage share the rest by the split: {panel} {pane} {code}')
+        check_that(page.evaluate(uncovered), f'{width} px: the QR code, the badge and every tab of the side panel are uncovered')
+        show_side_panel(page, False)
+        page.wait_for_timeout(300)
+        check_that(page.evaluate("getComputedStyle(document.querySelector('#side-panel')).display") == 'none' and get_boxes(page, steady) == before
+                   and get_boxes(page, ['.draw-pane', '.code-pane']) == [pane_before, code_before] and page.evaluate('document.documentElement.scrollWidth') <= width,
+                   f'{width} px: closing it gives the stage its width back, no sideways scrolling')
     page.set_viewport_size({'width': 1440, 'height': 900})
     page.wait_for_timeout(300)
 

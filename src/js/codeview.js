@@ -6,8 +6,8 @@ import { state, ui, NARROW_SCREEN, escapeHtml } from './state.js?v=2';
 import { translate } from './translate.js?v=2';
 import { createWrap } from './wrap.js?v=5';
 import { highlight } from './highlight.js?v=2';
-import { updateHistoryUi } from './history.js?v=5';
-import { showPane } from './panes.js?v=5';
+import { updateHistoryUi } from './history.js?v=6';
+import { showPane } from './panes.js?v=6';
 
 /** The height of one line of code, in pixels. */
 const LINE_HEIGHT = 20;
