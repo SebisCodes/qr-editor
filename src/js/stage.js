@@ -5,12 +5,12 @@
 
 import { state, ui, areas, NARROW_SCREEN, getElements } from './state.js?v=2';
 import { translate } from './translate.js?v=2';
-import { VIEWER } from './sync.js?v=25';
+import { VIEWER } from './sync.js?v=26';
 import { setKey } from './qrdoc.js?v=4';
 import { getTextWidth } from './drawing.js?v=3';
-import { editCode } from './history.js?v=6';
-import { showInCode } from './codeview.js?v=6';
-import { showPane } from './panes.js?v=6';
+import { editCode } from './history.js?v=7';
+import { showInCode } from './codeview.js?v=7';
+import { showPane } from './panes.js?v=7';
 
 /** The font size of the caption field when the caption's own size is unknown, in pixels. */
 const DEFAULT_FONT_SIZE = 16;

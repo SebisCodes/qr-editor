@@ -4,7 +4,7 @@
 
 import { state, ui, escapeHtml } from './state.js?v=2';
 import { translate } from './translate.js?v=2';
-import { renderMarks, showLine } from './codeview.js?v=6';
+import { renderMarks, showLine } from './codeview.js?v=7';
 
 /** At most this many problems are listed above the code. */
 const MAX_LISTED = 60;

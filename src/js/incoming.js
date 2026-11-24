@@ -5,9 +5,9 @@ import { state, ui, areas } from './state.js?v=2';
 import { translate } from './translate.js?v=2';
 import { showToast } from './toast.js?v=2';
 import { store } from './files.js?v=7';
-import { VIEWER } from './sync.js?v=25';
-import { editCode } from './history.js?v=6';
-import { openDocument, createDocument } from './documents.js?v=6';
+import { VIEWER } from './sync.js?v=26';
+import { editCode } from './history.js?v=7';
+import { openDocument, createDocument } from './documents.js?v=7';
 
 /** The name of a document from an AI that names none. */
 const AI_DOCUMENT_NAME = 'AI QR code';

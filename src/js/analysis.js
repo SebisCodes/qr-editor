@@ -12,7 +12,7 @@ import { drawDocument } from './drawing.js?v=3';
 import { getContentProblems } from './payload-check.js?v=2';
 import { getDesignProblems, checkScan } from './check.js?v=4';
 import { renderBadge, renderPreview } from './preview.js?v=3';
-import { renderProblems } from './problems.js?v=6';
+import { renderProblems } from './problems.js?v=7';
 
 /** The pause after a change before the drawn code is read back, in milliseconds. */
 const SCAN_DELAY_MS = 260;

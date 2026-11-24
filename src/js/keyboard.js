@@ -3,8 +3,8 @@
    while no field takes text and no dialog is open. */
 
 import { areas, getElement } from './state.js?v=2';
-import { undo, redo } from './history.js?v=6';
-import { isNewMenuOpen, setNewMenuOpen, saveFromShortcut, showHelp } from './toolbar.js?v=6';
+import { undo, redo } from './history.js?v=7';
+import { isNewMenuOpen, setNewMenuOpen, saveFromShortcut, showHelp } from './toolbar.js?v=7';
 
 /** Fields that take text: the shortcuts without Ctrl pause while one has the focus. */
 const TYPING = 'textarea, select, [contenteditable], input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=color]):not([type=button])';

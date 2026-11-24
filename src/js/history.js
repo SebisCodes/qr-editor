@@ -8,9 +8,9 @@
 import { state, ui, areas, getElement } from './state.js?v=2';
 import { translate } from './translate.js?v=2';
 import { showToast } from './toast.js?v=2';
-import { updateDocument } from './analysis.js?v=6';
-import { renderCode, syncScroll } from './codeview.js?v=6';
-import { saveEditorState, startSaveTimer } from './documents.js?v=6';
+import { updateDocument } from './analysis.js?v=7';
+import { renderCode, syncScroll } from './codeview.js?v=7';
+import { saveEditorState, startSaveTimer } from './documents.js?v=7';
 
 /** At most this many undo steps are kept. */
 const MAX_HISTORY_STEPS = 300;

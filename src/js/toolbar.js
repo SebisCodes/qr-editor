@@ -7,8 +7,8 @@ import { showToast } from './toast.js?v=2';
 import { renderSvg } from './draw.js?v=3';
 import { saveFile, getSafeFileName } from './util.js?v=3';
 import { openDialog } from './dialogs.js?v=5';
-import { undo, redo } from './history.js?v=6';
-import { createFromTemplate } from './documents.js?v=6';
+import { undo, redo } from './history.js?v=7';
+import { createFromTemplate } from './documents.js?v=7';
 
 /** A downloaded SVG is sized so that the code itself (without quiet zone) is this wide, in millimetres. */
 const SVG_CODE_WIDTH_MM = 25;

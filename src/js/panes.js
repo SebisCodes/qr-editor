@@ -5,8 +5,8 @@
 
 import { state, ui, getNumberInRange, getElement, getElements } from './state.js?v=2';
 import { resizePreview } from './preview.js?v=3';
-import { renderCode, syncScroll } from './codeview.js?v=6';
-import { saveEditorState } from './documents.js?v=6';
+import { renderCode, syncScroll } from './codeview.js?v=7';
+import { saveEditorState } from './documents.js?v=7';
 
 /** The smallest and largest share of the code pane. */
 const MIN_SPLIT = 0.12;

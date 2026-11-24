@@ -16,8 +16,8 @@ import { START, TEMPLATES } from './samples.js?v=3';
 import { renderSvg } from './draw.js?v=3';
 import { drawDocument } from './drawing.js?v=3';
 import { renderPreview } from './preview.js?v=3';
-import { setCode, addHistoryStep, updateHistoryUi } from './history.js?v=6';
-import { openFileChoice } from './pictures.js?v=6';
+import { setCode, addHistoryStep, updateHistoryUi } from './history.js?v=7';
+import { openFileChoice } from './pictures.js?v=7';
 
 /** The pause after typing before the document is stored, in milliseconds. */
 const SAVE_DELAY_MS = 400;

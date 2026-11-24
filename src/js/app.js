@@ -18,34 +18,34 @@
      5. offer the test hook window.qrEditor.
    ========================================================================== */
 
-import { createI18n } from './i18n.js?v=25';
+import { createI18n } from './i18n.js?v=26';
 import { setTranslation, translate, getTranslationReady } from './translate.js?v=2';
 import { createPanel } from './panel.js?v=6';
 import { startExport } from './exportui.js?v=7';
 import { createScanner } from './scan.js?v=6';
 import { createAiStatus } from './aistatus.js?v=9';
 import { store } from './files.js?v=7';
-import { createSync } from './sync.js?v=25';
+import { createSync } from './sync.js?v=26';
 import './export-menu.js?v=6';
 import { state, ui, areas } from './state.js?v=2';
 import { showToast } from './toast.js?v=2';
 import { drawDocument, getCaptionWidth } from './drawing.js?v=3';
-import { updateDocument } from './analysis.js?v=6';
+import { updateDocument } from './analysis.js?v=7';
 import { renderBadge, startPreview } from './preview.js?v=3';
-import { startLineWrap, startCodeView, renderCode, syncScroll, showInCode } from './codeview.js?v=6';
-import { renderProblems, startProblems } from './problems.js?v=6';
-import { startTyping, setCode, addHistoryStep, editCode, undo, redo } from './history.js?v=6';
-import { watchOtherTabs, openStartDocument, showFileName, startDocuments } from './documents.js?v=6';
+import { startLineWrap, startCodeView, renderCode, syncScroll, showInCode } from './codeview.js?v=7';
+import { renderProblems, startProblems } from './problems.js?v=7';
+import { startTyping, setCode, addHistoryStep, editCode, undo, redo } from './history.js?v=7';
+import { watchOtherTabs, openStartDocument, showFileName, startDocuments } from './documents.js?v=7';
 import { readSettings, updateStoredSettings } from './settings.js?v=2';
-import { receiveDocument, importExternalDocument } from './incoming.js?v=6';
-import { startStage } from './stage.js?v=6';
-import { startNewMenu, startHistoryButtons, startBarButtons } from './toolbar.js?v=6';
-import { startPictures, openFileChoice, readPictureCode, receiveScannedText } from './pictures.js?v=6';
-import { startLogoPicker } from './logo.js?v=6';
-import { startKeyboard } from './keyboard.js?v=6';
-import { startPanes, updateSplit } from './panes.js?v=6';
-import { getPanelActions } from './panel-actions.js?v=6';
-import { createAiAssistant, createAgentTools } from './assistants.js?v=6';
+import { receiveDocument, importExternalDocument } from './incoming.js?v=7';
+import { startStage } from './stage.js?v=7';
+import { startNewMenu, startHistoryButtons, startBarButtons } from './toolbar.js?v=7';
+import { startPictures, openFileChoice, readPictureCode, receiveScannedText } from './pictures.js?v=7';
+import { startLogoPicker } from './logo.js?v=7';
+import { startKeyboard } from './keyboard.js?v=7';
+import { startPanes, updateSplit } from './panes.js?v=7';
+import { getPanelActions } from './panel-actions.js?v=7';
+import { createAiAssistant, createAgentTools } from './assistants.js?v=7';
 
 startEditor();
 

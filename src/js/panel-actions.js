@@ -9,10 +9,10 @@ import { showToast } from './toast.js?v=2';
 import { setKey, setKeys, setContent, resetDesign, KEYS } from './qrdoc.js?v=4';
 import { parseContent, buildContent } from './payload.js?v=5';
 import { buildQrReference, buildCreditorReference } from './payload-bank.js?v=2';
-import { editCode } from './history.js?v=6';
-import { showLine } from './codeview.js?v=6';
-import { saveEditorState } from './documents.js?v=6';
-import { openLogoChoice } from './logo.js?v=6';
+import { editCode } from './history.js?v=7';
+import { showLine } from './codeview.js?v=7';
+import { saveEditorState } from './documents.js?v=7';
+import { openLogoChoice } from './logo.js?v=7';
 
 /** The prefix of a creditor reference: RF and its two check digits. */
 const CREDITOR_PREFIX = /^RF\d\d/i;
