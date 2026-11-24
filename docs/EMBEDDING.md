@@ -97,6 +97,7 @@ Editor to page:
 | `qreditor:closing` | `id, name, unsaved, content?` | (own window) The window closes. Always sent; `content` only when there are unsaved changes, `id` is null before the first load. |
 | `qreditor:reload` | `id, unsaved` | F5 or Ctrl+R inside your page. The editor does not reload itself; ask the user and reload the frame if wanted. |
 | `qreditor:key-request` | `reason: "missing"` | The editor has no AI key for this session yet (see "AI through your own server"). |
+| `qreditor:ai-click` | `request, id, name` | The user pressed the AI button; only with `ai: { dialog: "page" }` (see "AI through your own server"). |
 
 Page to editor:
 
@@ -105,7 +106,8 @@ Page to editor:
 | `qreditor:load` | `name, content, context?, hook?, ai?, from?, target?` | Opens your document. A document of the same name that came from your page before is replaced; the user's own documents never are. |
 | `qreditor:get` |  | Asks for the current state; always answered with `qreditor:save`, also when nothing changed (`id` and `content` are null before the first load). |
 | `qreditor:save` |  | Presses Save. |
-| `qreditor:ai` | `label?, prompt?, endpoint?, key?, base?` or `clear: true` | AI through your own server. |
+| `qreditor:ai` | `label?, prompt?, endpoint?, key?, base?, answer?, dialog?` or `clear: true`, or `decline: true, message?` | AI through your own server; `decline` answers `qreditor:key-request`. |
+| `qreditor:ai-click` | `request, handled` | The answer to `qreditor:ai-click`: `handled: true` when your page shows its own AI dialog. |
 
 Optional fields of `qreditor:load`:
 
@@ -254,6 +256,46 @@ One key per editor session: once the editor has a key it keeps it until the sess
 `clear`, and does not take a different one. Only while it has none, "Copy prompt" sends `{
 type: 'qreditor:key-request', reason: 'missing' }`; answer with a `qreditor:ai` message
 within 5 seconds.
+
+### Your own answer part, your own AI dialog, declining a key
+
+- `answer` (in `ai` of `load`, or in `qreditor:ai`): your own text for the "HOW TO ANSWER" part of
+  the copied prompt, for example when your page takes the AI's answer in its own way. The
+  prompt shows it fenced under `HOW TO ANSWER FROM THE WEBSITE <your host>` and carries neither
+  the endpoint nor the key, so "Copy prompt" sends no `key-request`. `"none"` leaves the part
+  out, `""` gives the editor's own part back, `clear` ends it with the other settings. At most
+  4000 characters are kept. The AI dialog says that your site gives the answering
+  instructions and shows your text together with your prompt.
+- `dialog: "page"` (in `ai`): your page shows its own AI dialog. When the user presses the AI
+  button while your document is open, the editor sends `{ type: 'qreditor:ai-click', request,
+  id, name }` (no content) and waits 300 ms. Answer `{ type: 'qreditor:ai-click', request,
+  handled: true }` with the same `request` to keep the editor's dialog shut; `handled: false`
+  opens it at once, and without an answer it opens after the wait. `dialog: "editor"` or
+  `clear` ends it.
+- Declining a key: answer `qreditor:key-request` with `{ type: 'qreditor:ai', decline: true,
+  message }` when your server gives no key, for example when the user is not logged in. The
+  editor stops waiting at once, the prompt asks the AI for a link, and after copying the user
+  sees `<your host>: <message>` as plain text on one line (at most 200 characters). Write
+  `message` in your page's language; without it the editor shows its own note.
+
+```js
+ed.contentWindow.postMessage({ type: 'qreditor:ai', dialog: 'page', answer: 'Reply in the chat of example.com.' }, ORIGIN);
+addEventListener('message', e => {
+  if (e.source !== ed.contentWindow || e.origin !== ORIGIN) return;
+  const m = e.data;
+  if (m.type === 'qreditor:ai-click') {                 // the user pressed the AI button
+    openMyAiDialog();
+    ed.contentWindow.postMessage({ type: 'qreditor:ai-click', request: m.request, handled: true }, ORIGIN);
+  }
+  if (m.type === 'qreditor:key-request' && !loggedIn) {
+    ed.contentWindow.postMessage({ type: 'qreditor:ai', decline: true, message: 'Please log in to use the AI.' }, ORIGIN);
+  }
+});
+```
+
+In every prompt the document stands in a code fence one backtick longer than any run of
+backticks in it, below a line that marks its text, its name and a quoted selection as data;
+your texts (`prompt`, `rules`, `answer`) stand in such fences under your real host.
 
 Key, endpoint and prompt are taken only from the page around the editor, kept in memory,
 never stored and never sent by the editor itself: the key only goes into the prompt the user

@@ -5,9 +5,11 @@
 
 Checks the document (design lines, ---, content), the code drawn from it and
 read back (scan check), the Content, Design and Check tabs writing into the
-code with one undo step each, the problems, editing the caption in place,
-reading a code from a picture, every export format, many codes from a table,
-AI links, WebMCP tools, My documents, the viewer and the phone layout."""
+code with one undo step each, the side panel as a drawer below the stage's bar
+(closed at the start, nothing moves when it opens or closes), the problems,
+editing the caption in place, reading a code from a picture, every export format,
+many codes from a table, AI links, WebMCP tools, My documents, the viewer and the
+phone layout."""
 
 import base64
 import io
@@ -22,6 +24,34 @@ from playwright.sync_api import sync_playwright
 URL = os.environ.get('EDITOR_URL', 'http://127.0.0.1:8107/')
 failures = []
 FAKE_MCP = "window.tools = []; document.modelContext = { registerTool(t) { window.tools.push(t); } }; if (navigator.clipboard) navigator.clipboard.writeText = t => { window.__p = t; return Promise.resolve(); };"
+
+
+def show_side_panel(page, is_open):
+    """Opens or closes the side panel's drawer (it is closed at the start).
+
+    Args:
+        page (Page): the editor's page.
+        is_open (bool): True to open it, False to close it.
+
+    Returns:
+        None: the side panel is open or closed.
+    """
+    button = page.locator('#btn-panel')
+    if button.count() and button.is_visible() and (button.get_attribute('aria-expanded') == 'true') != is_open:
+        button.click()
+
+
+def get_boxes(page, selectors):
+    """Returns the place and size of elements.
+
+    Args:
+        page (Page): the editor's page.
+        selectors (list[str]): the elements' selectors.
+
+    Returns:
+        list[dict]: x, y, width and height of each, rounded.
+    """
+    return page.evaluate("ss => ss.map(s => { const r = document.querySelector(s).getBoundingClientRect(); return { x: Math.round(r.x), y: Math.round(r.y), width: Math.round(r.width), height: Math.round(r.height) }; })", selectors)
 
 
 def check_that(cond, what):
@@ -143,6 +173,27 @@ with sync_playwright() as pw:
     check_that(page.locator('#scan-badge[data-state="good"]').count() == 1, 'the badge says the code scans')
     check_that(page.locator('#hl .k').count() >= 10 and page.locator('#hl .d').count() == 1, 'the code is highlighted (keys, the --- line)')
 
+    # --- Side panel: a drawer below the stage's bar, closed at the start ---
+    steady = ['.code-pane', '#stage', '#qr-view', '.draw-pane > .pane-header', '#scan-badge', '#btn-panel']
+    for width in (1440, 1280, 1100, 900):
+        page.set_viewport_size({'width': width, 'height': 900})
+        page.wait_for_timeout(300)
+        before = get_boxes(page, steady)
+        closed = page.evaluate("getComputedStyle(document.querySelector('#side-panel')).display") == 'none' and page.get_attribute('#btn-panel', 'aria-expanded') == 'false'
+        show_side_panel(page, True)
+        page.wait_for_timeout(300)
+        panel, bar = get_boxes(page, ['#side-panel', '.draw-pane > .pane-header'])
+        check_that(closed and get_boxes(page, steady) == before, f'{width} px: the side panel is closed at the start and opens without moving the code, the stage, the QR code, the bar or its button')
+        check_that(panel['y'] >= bar['y'] + bar['height'] and panel['x'] + panel['width'] == width and panel['width'] > 0, f'{width} px: the drawer stands below the stage\'s bar at the right edge: {panel}')
+        page.focus('[data-itab=content]')
+        page.keyboard.press('Escape')
+        page.wait_for_timeout(200)
+        check_that(page.evaluate("getComputedStyle(document.querySelector('#side-panel')).display") == 'none' and page.evaluate("document.activeElement.id") == 'btn-panel'
+                   and get_boxes(page, steady) == before and page.evaluate('document.documentElement.scrollWidth') <= width,
+                   f'{width} px: Escape closes it, the focus goes to its button, nothing moved, no sideways scrolling')
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    page.wait_for_timeout(300)
+
     # --- Text without a header is all content ---
     set_code(page, 'https://example.com/a')
     check_that(get_state(page, '[S.doc.header, S.type, S.content]') == [False, 'link', 'https://example.com/a'], 'text without --- is all content (a link)')
@@ -154,6 +205,7 @@ with sync_playwright() as pw:
 
     # --- Design tab writes its own line, one undo step ---
     set_code(page, 'color: #1d2b53\n---\nhttps://example.com\n')
+    show_side_panel(page, True)
     page.click('[data-itab=design]')
     page.click('.choice[data-key="modules"][data-val="dots"]')
     page.wait_for_timeout(400)
@@ -205,6 +257,7 @@ with sync_playwright() as pw:
     page.fill('#f-url', 'http://example.com')
     page.wait_for_timeout(900)
     check_that(any('uses http://' in x for x in get_problems(page)), 'http:// is flagged')
+    show_side_panel(page, False)
 
     # --- Payments ---
     page.click('#btn-new')

@@ -7,13 +7,13 @@ import { state, ui, areas } from './state.js?v=2';
 import { showToast } from './toast.js?v=2';
 import { store } from './files.js?v=7';
 import { TEMPLATES } from './samples.js?v=3';
-import { createAi } from './ai.js?v=6';
+import { createAi } from './ai.js?v=7';
 import { createWebMcp } from './mcp.js?v=3';
 import { setKey, setContent, KEYS } from './qrdoc.js?v=4';
 import { TYPE_NAMES } from './payload.js?v=5';
-import { editCode, undo } from './history.js?v=3';
-import { openDocument, createDocument } from './documents.js?v=3';
-import { receiveDocument } from './incoming.js?v=3';
+import { editCode, undo } from './history.js?v=5';
+import { openDocument, createDocument } from './documents.js?v=5';
+import { receiveDocument } from './incoming.js?v=5';
 
 /** Documents longer than this are sent to an AI with their pictures shortened. */
 const MAX_FULL_DOCUMENT = 60000;
@@ -113,6 +113,8 @@ export function createAiAssistant() {
         getRemoteSettings: () => areas.sync?.getAiSettings() || null,
         fetchKey: () => (areas.sync ? areas.sync.fetchKey() : Promise.resolve(null)),
         hasValidKey: () => !!areas.sync?.hasValidKey(),
+        handleAiClick: openEditorDialog => (areas.sync ? areas.sync.handleAiClick(openEditorDialog) : openEditorDialog()),
+        getKeyDecline: () => areas.sync?.getKeyDecline() || '',
     });
 }
 

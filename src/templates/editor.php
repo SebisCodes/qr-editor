@@ -28,7 +28,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/img/logo.svg">
-<link rel="stylesheet" href="/css/style.css?v=9">
+<link rel="stylesheet" href="/css/style.css?v=10">
 <script src="/js/lang-menu.js?v=1" defer></script>
 <script src="/js/theme.js?v=7" data-editor-page></script>
 <script type="application/ld+json"><?= get_json_ld('jsonld') ?></script>
@@ -127,7 +127,9 @@
         </div>
     </section>
 
-    <aside class="pane inspector" aria-label="Edit">
+    <button type="button" class="tool panel-toggle" id="btn-panel" aria-controls="side-panel" aria-expanded="false" title="Show or hide the side panel" aria-label="Side panel"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></svg></button>
+
+    <aside class="pane inspector" id="side-panel" aria-label="Edit">
         <div class="pane-header tabs" role="tablist">
             <button type="button" role="tab" data-itab="content" aria-selected="true" title="What the code holds: link, WiFi, contact, payment …">Content</button>
             <button type="button" role="tab" data-itab="design" aria-selected="false" title="Colors, shapes, logo, caption and frame">Design</button>
@@ -327,6 +329,6 @@ addEventListener('message', e =&gt; {
 
 <?php include __DIR__ . '/footer.php'; ?>
 
-<script type="module" src="/js/app.js?v=19"></script>
+<script type="module" src="/js/app.js?v=21"></script>
 </body>
 </html>

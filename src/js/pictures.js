@@ -6,11 +6,11 @@
 import { translate } from './translate.js?v=2';
 import { showToast } from './toast.js?v=2';
 import { DEFAULT_NAME, getElement } from './state.js?v=2';
-import { VIEWER } from './sync.js?v=23';
+import { VIEWER } from './sync.js?v=25';
 import { setContent } from './qrdoc.js?v=4';
 import { getContentType, TYPE_NAMES } from './payload.js?v=5';
 import { readImage } from './check.js?v=4';
-import { createDocument } from './documents.js?v=3';
+import { createDocument } from './documents.js?v=5';
 
 /** Files larger than this are not opened as documents, in bytes. */
 const MAX_DOCUMENT_BYTES = 20 * 1024 * 1024;

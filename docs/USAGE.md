@@ -35,6 +35,10 @@ documents stay there unless you send them somewhere yourself.
 2. **Design** it in the **Design** tab, and look at the **Check** tab.
 3. **Export** SVG, PDF or EPS for print, or PNG, JPEG or WebP.
 
+The tabs **Content**, **Design** and **Check** are in the side panel. The button at the top right
+of the work area opens it over the right of the QR code's stage, below the stage's bar, and closes
+it again (Escape too); it is closed when the editor opens. On a phone it is the view **Edit**.
+
 ## The QR document
 
 The code on the left is the whole QR document: optional design lines `key: value`, a line
@@ -139,7 +143,9 @@ document appears in your editor. **Undo** takes every change back. The links loo
 A tab opened with such a link hands the document to the editor tab you used last. You can
 also paste the AI's whole answer into the editor (Ctrl+V outside the code); links that a
 terminal broke over several lines are joined. When the editor is embedded in another
-website, links cannot reach it, so paste the answer there.
+website, links cannot reach it, so paste the answer there. A website that embeds the
+editor may give its own instructions for how the AI answers, or show its own AI dialog
+when you press the button; the dialog names the website and shows its instructions.
 
 **Browser agents (WebMCP):** in browsers that offer WebMCP, the page registers tools for AI
 agents that run in the page itself: `get_document`, `get_problems`, `set_content`,

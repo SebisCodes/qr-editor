@@ -172,6 +172,8 @@ with tempfile.TemporaryDirectory() as d:
             ed.evaluate(f'c => {HOOK}.change(c)', evil)
             ed.wait_for_timeout(1500)
             ed.evaluate(f'() => {HOOK}.store.write({HOOK}.state.fileId, {{ name: \'<img src=x onerror="window.pwned=9">\' }})')
+            if ed.locator('#btn-panel').is_visible():
+                ed.click('#btn-panel')
             for tab in ('content', 'design', 'check'):
                 ed.click(f'[data-itab={tab}]')
                 ed.wait_for_timeout(200)

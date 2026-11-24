@@ -12,6 +12,7 @@
  */
 
 import { EDITOR_PREFIX, LINK_KIND } from './ai-links.js?v=3';
+import { formatSiteText, formatDocumentData, formatAnswerPart } from './prompt-parts.js?v=1';
 
 const SITE = 'https://qr.giit.ch/';
 const DOCUMENT_SECTION = 'THE QR DOCUMENT';
@@ -19,7 +20,6 @@ const MAX_LISTED_FILES = 40;
 const MAX_LISTED_PROBLEMS = 12;
 const MAX_SELECTION_LENGTH = 300;
 const SECTION_HEADING = /\n\n[A-Z][A-Z ]+\n/;
-const FENCE = /`{3,}/g;                            // a code fence inside site text would end the fence around it
 
 /**
  * The page that holds the document, from the page around the editor (plain text from that page).
@@ -161,7 +161,7 @@ function getDocumentPart(promptState, makeNew) {
     const selection = promptState.sel ? ` (I have selected: "${promptState.sel.slice(0, MAX_SELECTION_LENGTH)}")` : '';
     const about = promptState.about ? `\n${promptState.about}` : '';
     const problems = promptState.problems && promptState.problems.length ? `\nThe editor reports: ${promptState.problems.slice(0, MAX_LISTED_PROBLEMS).join('; ')}` : '';
-    return `${heading}${selection}${about}${problems}\n\`\`\`${LINK_KIND}\n${promptState.code.trim()}\n\`\`\`\n\nMy request: `;
+    return `${heading}${selection}${about}${problems}\n${formatDocumentData(LINK_KIND, promptState.code.trim())}\n\nMy request: `;
 }
 
 /**
@@ -183,19 +183,6 @@ function getDocumentHeading(promptState, makeNew) {
 function getContextPart(context) {
     return `THIS DOCUMENT BELONGS TO ${context.host ? `"${context.host}"` : 'a website'}${context.title ? ` ("${context.title}")` : ''}
 That page opened the editor and gets every saved version back by itself when I click Save (or press Ctrl+S) - nothing to set up and no server to build. Keep the document working with that page.${context.rules ? `\n\n${formatSiteText('RULES', context.site, context.host, context.rules)}` : ''}`;
-}
-
-/**
- * Returns text from a website, marked as such: where it comes from (the real origin) and fenced,
- * so the AI can tell it apart from what the user writes.
- * @param {string} head - the heading, such as "RULES" or "INSTRUCTIONS".
- * @param {string} [site] - the real origin of the page.
- * @param {string} [label] - the name the page gives itself.
- * @param {string} text - the page's text.
- * @returns {string} the marked and fenced text.
- */
-function formatSiteText(head, site, label, text) {
-    return `${head} ${site ? `FROM THE WEBSITE ${site}` : 'FROM THE WEBSITE'}${label && label !== site ? ` ("${label}")` : ''}\n\`\`\`text\n${text.replace(FENCE, "'''")}\n\`\`\``;
 }
 
 /**
@@ -223,7 +210,8 @@ function getRemotePrompt(promptState, remote, makeNew) {
     if (remote.base) parts.push(getRemoteBase(remote));
     if (remote.prompt) parts.push(formatSiteText('INSTRUCTIONS', remote.site, remote.label, remote.prompt));
     if (promptState.context && promptState.context.rules) parts.push(formatSiteText('RULES', remote.site, remote.label, promptState.context.rules));
-    parts.push(getRemoteAnswer(promptState, remote, makeNew));
+    const answer = formatAnswerPart(remote, getRemoteAnswer(promptState, remote, makeNew));
+    if (answer) parts.push(answer);
     return parts.join('\n\n');
 }
 

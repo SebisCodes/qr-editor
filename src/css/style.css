@@ -1067,3 +1067,21 @@ html:lang(ko) { --lang-short: "KO"; }
     /* Tool bars above the preview wrap instead of running off the screen. */
     .tools > .group { flex-wrap: wrap; }
 }
+
+/* The side panel: on the desktop a drawer over the right of the QR code's stage below its bar
+   (panes.js keeps the bar's height as --preview-bar), closed at the start and opened with the
+   button in the top right corner of the work area, which stays in its place. The code, the stage
+   and the bar keep their size and place while it opens and closes. Up to 860 px it is the view
+   "Edit". */
+.panel-toggle { display: none; }
+@media (min-width: 861px) {
+    .workspace { --drawer-width: 330px; position: relative; z-index: 0; grid-template-columns: minmax(0, var(--code-fr)) 6px minmax(0, var(--view-fr)); }
+    .inspector { position: absolute; top: var(--preview-bar, 45px); right: 0; bottom: 0; z-index: 6; width: var(--drawer-width); max-width: 70%; border-left: 1px solid var(--border); box-shadow: -10px 0 28px rgba(0, 0, 0, .14); }
+    .workspace:not([data-panel="open"]) .inspector { display: none; }
+    .draw-pane > .pane-header { padding-right: 48px; }
+    .panel-toggle { display: inline-grid; position: absolute; top: 7px; right: 9px; z-index: 7; background: var(--surface); }
+    .panel-toggle[aria-expanded="true"] { background: var(--brand-light); border-color: var(--brand); color: var(--brand); }
+    /* With the drawer open, the hint of an empty code stands in the middle of the part of the stage
+       left of the drawer, as wide as its text and at most as wide as that part. */
+    .workspace[data-panel="open"] .qr-stage .empty-hint { right: calc(var(--drawer-width) + 12px); left: 12px; width: fit-content; max-width: min(420px, calc(100% - var(--drawer-width) - 24px)); margin-inline: auto; transform: none; }
+}

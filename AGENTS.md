@@ -34,8 +34,8 @@ docs/         USAGE.md and EMBEDDING.md
 
 `src/js/app.js` starts the editor and wires its areas together; each area has a module of
 its own, and every file starts with a comment that says what it does. `sync.js` (webhook and
-embedding), `i18n.js`, `dialogs.js`, `zip.js`, `wrap.js`, `post.php` and `src/php/` are the
-same files in every giit editor.
+embedding), `prompt-parts.js` (the parts of the AI prompt), `i18n.js`, `dialogs.js`, `zip.js`,
+`wrap.js`, `post.php` and `src/php/` are the same files in every giit editor.
 
 ## Languages
 

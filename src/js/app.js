@@ -18,34 +18,34 @@
      5. offer the test hook window.qrEditor.
    ========================================================================== */
 
-import { createI18n } from './i18n.js?v=22';
+import { createI18n } from './i18n.js?v=24';
 import { setTranslation, translate, getTranslationReady } from './translate.js?v=2';
 import { createPanel } from './panel.js?v=6';
 import { startExport } from './exportui.js?v=7';
 import { createScanner } from './scan.js?v=6';
-import { createAiStatus } from './aistatus.js?v=8';
+import { createAiStatus } from './aistatus.js?v=9';
 import { store } from './files.js?v=7';
-import { createSync } from './sync.js?v=23';
+import { createSync } from './sync.js?v=25';
 import './export-menu.js?v=6';
 import { state, ui, areas } from './state.js?v=2';
 import { showToast } from './toast.js?v=2';
 import { drawDocument, getCaptionWidth } from './drawing.js?v=3';
-import { updateDocument } from './analysis.js?v=3';
+import { updateDocument } from './analysis.js?v=5';
 import { renderBadge, startPreview } from './preview.js?v=3';
-import { startLineWrap, startCodeView, renderCode, syncScroll, showInCode } from './codeview.js?v=3';
-import { renderProblems, startProblems } from './problems.js?v=3';
-import { startTyping, setCode, addHistoryStep, editCode, undo, redo } from './history.js?v=3';
-import { watchOtherTabs, openStartDocument, showFileName, startDocuments } from './documents.js?v=3';
+import { startLineWrap, startCodeView, renderCode, syncScroll, showInCode } from './codeview.js?v=5';
+import { renderProblems, startProblems } from './problems.js?v=5';
+import { startTyping, setCode, addHistoryStep, editCode, undo, redo } from './history.js?v=5';
+import { watchOtherTabs, openStartDocument, showFileName, startDocuments } from './documents.js?v=5';
 import { readSettings, updateStoredSettings } from './settings.js?v=2';
-import { receiveDocument, importExternalDocument } from './incoming.js?v=3';
-import { startStage } from './stage.js?v=3';
-import { startNewMenu, startHistoryButtons, startBarButtons } from './toolbar.js?v=3';
-import { startPictures, openFileChoice, readPictureCode, receiveScannedText } from './pictures.js?v=3';
-import { startLogoPicker } from './logo.js?v=3';
-import { startKeyboard } from './keyboard.js?v=3';
-import { startPanes, updateSplit } from './panes.js?v=3';
-import { getPanelActions } from './panel-actions.js?v=3';
-import { createAiAssistant, createAgentTools } from './assistants.js?v=3';
+import { receiveDocument, importExternalDocument } from './incoming.js?v=5';
+import { startStage } from './stage.js?v=5';
+import { startNewMenu, startHistoryButtons, startBarButtons } from './toolbar.js?v=5';
+import { startPictures, openFileChoice, readPictureCode, receiveScannedText } from './pictures.js?v=5';
+import { startLogoPicker } from './logo.js?v=5';
+import { startKeyboard } from './keyboard.js?v=5';
+import { startPanes, updateSplit } from './panes.js?v=5';
+import { getPanelActions } from './panel-actions.js?v=5';
+import { createAiAssistant, createAgentTools } from './assistants.js?v=5';
 
 startEditor();
 
